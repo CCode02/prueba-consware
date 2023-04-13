@@ -1,0 +1,36 @@
+1
+SELECT Usuarios.nombre
+FROM Tareas INNER join Usuarios on Tareas.idusuario = Usuarios.idusuario
+WHERE idtipo = 1;
+
+2
+SELECT T.idtipo, U.Nombre, T.idtarea
+FROM Tareas as T INNER join Usuarios as U on T.idusuario = U.idusuario
+order by T.idtipo, T.idusuario
+
+3
+CREATE PROCEDURE NewTarea (
+@fechaCreacion datetime2(7),
+@creadoPor int,
+@EstadoRegistro varchar(1),
+@ObservacionEstado varchar(4000),
+@Nombre int,
+@IdTipo int,
+@IdUsuario int
+)
+AS
+BEGIN
+	insert into Tareas
+	VALUES (@fechaCreacion, @creadoPor, NULL, NULL, NULL, NULL, @EstadoRegistro, @ObservacionEstado, @Nombre, @IdTipo, @IdUsuario)
+END 
+
+4
+CREATE FUNCTION listTareas (@idtipo int)
+RETURNS int
+AS
+RETURN
+(
+    SELECT COUNT (nombre)
+    from Tareas
+    WHERE idtipo = @idtipo
+);
